@@ -130,3 +130,11 @@ select -r Window ;
 parent Window Body ;
 parent Window Chest ;
 select -cl ;
+
+select -r LeftLeg ;
+sets -e -forceElement blinn9SG;
+select -cl  ;
+select -r Window ;
+parent Window Body ;
+parent Window Chest ;
+select -cl ;
