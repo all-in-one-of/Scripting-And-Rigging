@@ -1,0 +1,67 @@
+Variables:
+$name_of_var = 13;
+
+Types: (stays up until you close Maya)
+int - #
+float - decimal
+string - "abc"
+bool - 0-1
+vector - <x,y,z>
+
+Array:
+<type> $var[]
+
+Operators:
+= - equals
+! - not equal
+> -greater than
+&& - And
+|| - Or
+
+if(condition) {
+block;
+}
+else if{
+block
+}
+for( int$i=0; $i<10; $i++ ) {
+//counter, condition, icrement ^
+	block;
+}
+
+for inloop - Iterating through an array
+string $names[] = {"Kyle", "Alexa", "Sam", "Devin"}
+/*  (Example of for loop)
+for ( $i = 0; $i < size ($names); $i++){
+	string $student;
+	$student = $names[$i];
+}
+(This long "for" code is the long version of what the code below is doing.)
+*/
+for ($student in$names) {
+	print  ("Wake up" + $student + "!!!\n")
+}
+Prints everything seperatly
+
+while ($i<10)
+{
+block:
+$i++;
+// you must have "$i++", otherwise you'll be in a forever loop
+}
+
+functions -> Procedures -> proc
+<global> proc <type> name (parameters){}
+global proc nameCaller (string $person) {"butthead", "scumbag", "Kyle"}
+	string $insults[] = {"butthead", "scumbag", "Kyle"};
+	$index = rand (4);
+print ($person + "is a " + $insults[$index] + "!!!");
+}
+nameCaller("Devin");
+//rand (1.5, 10.2) stands for "random"
+Example with Back tick
+string $sels //selection// [] = `ls -selection`; 
+print $sels;
+//`` back ticks assigns the selection back to the string 
+//prints everything that is selected.
+
