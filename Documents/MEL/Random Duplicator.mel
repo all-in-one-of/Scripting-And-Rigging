@@ -1,0 +1,9 @@
+polyCylinder -r 1 -h 2 -sx 20 -sy 1 -sz 1 -ax 0 1 0 -rcp 0 -cuv 3 -ch 1;
+string $person[] = `ls -selection`; 
+print $person;
+rename "pCylinder1" "Body";
+duplicate -rr;
+rand(1.5, 10.2)
+for( $i=0; $i<10; $i++ ) {
+
+	print  ("Wake up" + $student + "!!!\n")
