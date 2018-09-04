@@ -1,9 +1,48 @@
-polyCylinder -r 1 -h 2 -sx 20 -sy 1 -sz 1 -ax 0 1 0 -rcp 0 -cuv 3 -ch 1;
-string $person[] = `ls -selection`; 
-print $person;
-rename "pCylinder1" "Body";
-duplicate -rr;
-rand(1.5, 10.2)
-for( $i=0; $i<10; $i++ ) {
+global proc string[] Flower() {
+    
+    string $objects[];
 
-	print  ("Wake up" + $student + "!!!\n")
+    string $petals [] = `polySphere -r 1 -sx 10 -sy 20 -ax 0 1 0 -cuv 2 -ch 1 -name "Petal"`;
+    scale -r 1 0.494875 1 ;
+    scale -r 1 1 2.79334 ;
+    move -r 0 0 3 ;
+    $sels =`ls -selection`;
+    $objects[0] = $sels[0];
+    
+    polySphere -r .2 -sx 20 -sy 20 -ax 0 1 0 -cuv 2 -ch 1 -name "Help";
+    move -r 0 0 0.4 ;
+    $sels =`ls -selection`;
+    $objects[1] = $sels[0];
+    
+    
+    $objects = `polyUnite -ch 1 -mergeUVSets 1 -centerPivot -name Petal Petal Help`;
+    delete -ch;
+    rename "Petal1" "Petals";
+    
+    polySphere -r 1 -sx 20 -sy 20 -ax 0 1 0 -cuv 2 -ch 1 -name "Center";
+    
+    select -r Petals ;
+    move -r 0 0 -2.381741 Petals.scalePivot Petals.rotatePivot ;
+    
+    return $objects;
+}
+
+Flower();
+
+
+global proc DuplicatePetals () {
+    
+    string $obj = `Petals`;
+    int $numPetals = rand (10, 40);
+    float $degreeApart = (360/$numPetals);
+    for($i=1; $i<=$numPetals; $i++)
+    {
+        duplicate;
+        rotate -r 0 $degreeApart 0;
+}
+}
+
+DuplicatePetals(); 
+
+ 
+//xform (transform)
