@@ -3,52 +3,61 @@
 //create function to color controls
 //create 3 more functions that create different shapes (quare, diamond, etc.)
 
-//Creating the ctrl
-CreateNURBSCircle;
-doGroup 0 1 1;
-global proc CreateCtrl(int shape){
+
+
+global proc CreateCtrl(string $shape){
     
-    //Select the jnts
+   
     string $sels[] = `ls -sl`;
+    string $control[];
+    string $controlGrp;
+    print($sels);
+    
+  //  if (
     
     //Create correct number of crls(shapes)(nurbscurve) for each jnt
     for ($sel in $sels){
         
-        CreateNURBSCircle;
-        doGroup 0 1 1;
+        if($shape == "Circle") 
+        {
+            $control = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 1 -d 3 -ut 0 -tol 0.01 -s 8 -ch 1`;
+        }
+       /*         if($shape == "Square") 
+        {
+            $control = `nurbsSquarePreset(0,0,0,0,0,1,0,1,1,1,3,1);
+            nurbsSquare -c 0 0 0 -nr 0 1 0 -sl1 1 -sl2 1 -sps 1 -d 3 -ch 1 ; objectMoveCommand`;
+        }
+                if($shape == "Circle") 
+        {
+            $control = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 1 -d 3 -ut 0 -tol 0.01 -s 8 -ch 1`;
+        }
+        */
+        
+        $controlGrp = `group $control`;
+        print($controlGrp);
+        
+        matchTransform -rot -pos $controlGrp $sel;
+        
+        string $tokenizedSel[];
+        
+        tokenize $sel "JNT" $tokenizedSel;
+        
+        ColorControls($control, 17);
+        
+        rename $control[0] ($tokenizedSel[0] + "Ctrl");
+        rename $controlGrp ($tokenizedSel[0] + "Ctrl_Grp");
+        
     }
     
     //rename ctrls and ctrl groups to end with suffix: _Ctrl or _Ctrl_Grp
     //
-    string
+    //string
     
     //matchtransform the group to the selection of the jnt
-    matchTransform ctrl_Grp $sels;
-}
-
-/*global proc CreateCtrlGroup(){
     
 }
-*/
 
-
-
-
-
-//To change color of Controls 
-global proc CreateCtrls(int $color)
-{
-    string $sels[] = `ls -sl`;
-    
-    for ($sel in $sels){
-        string $ctrls[] = `circle -name ($sel + "_Ctrl")`;
-        string $ctrl = $ctrls[0];
-        ColorControls($ctrl, $color);
-    }
-}
-
-
-global proc ColorControls(string $ctrl, int $color)
+global proc ColorControls(string $ctrl[], int $color)
 {
     // Sets color index of the control
     
@@ -75,3 +84,13 @@ global proc ColorControls(string $ctrl, int $color)
         }
     }
 }
+
+CreateCtrl(1);
+
+/*
+//if $sels has someting in it, do the sweet code we just made
+if (size($sels) != 0)
+
+//if $sels has nothing in it, make a control and group it without mathing transformations or all that jazz
+else
+*/
