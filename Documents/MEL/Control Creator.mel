@@ -1,0 +1,113 @@
+//create a control/control group based on a selection.
+//control will be named using the selection name with _Ctrl
+//create function to color controls
+//create 3 more functions that create different shapes (square, diamond, etc.)
+
+
+
+global proc string ChooseShape(string $shape){
+    
+    string $control[];
+    
+      
+        
+        if($shape == "Circle") 
+        {
+            $control = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 1 -d 3 -ut 0 -tol 0.01 -s 8 -ch 1`;
+        }
+        
+        if($shape == "Square") 
+        {
+            $control = `nurbsSquare -c 0 0 0 -nr 0 1 0 -sl1 1 -sl2 1 -sps 1 -d 3 -ch 1 objectMoveCommand`;
+        }
+        
+        if($shape == "Flower") 
+        {
+            $control = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 1 -d 3 -ut 0 -tol 0.01 -s 8 -ch 1`;
+            select -r nurbsCircle1.cv[3] ;
+            select -tgl nurbsCircle1.cv[7] ;
+            select -tgl nurbsCircle1.cv[1] ;
+            select -tgl nurbsCircle1.cv[5] ;
+            scale -ws -r -p 0cm 0cm 0cm -0.704431 -0.704431 -0.704431 ;
+            select -cl  ;
+
+        }   
+        
+        return $control[0];
+}  
+
+
+        
+global proc CreateCtrl(string $shapeType){
+    
+   
+    string $sels[] = `ls -sl`;
+    string $control;
+    string $controlGrp;
+    
+    //Create correct number of crls(shapes)(nurbscurve) for each jnt
+    
+        for ($sel in $sels){
+            
+        $control = ChooseShape($shapeType);
+        
+        ColorControls($control, 17);
+        
+        $controlGrp = `group $control`;
+        
+        
+        matchTransform -rot -pos $controlGrp $sel;
+        
+        string $tokenizedSel[];
+        
+        tokenize $sel "JNT" $tokenizedSel;        
+        
+        rename $control ($tokenizedSel[0] + "Ctrl");
+        rename $controlGrp ($tokenizedSel[0] + "Ctrl_Grp");
+        
+    }
+    
+    //rename ctrls and ctrl groups to end with suffix: _Ctrl or _Ctrl_Grp
+
+    
+    //matchtransform the group to the selection of the jnt
+    
+}
+
+global proc ColorControls(string $ctrl, int $color)
+{
+    // Sets color index of the control
+    
+    //define string array for shapes
+    string $shapes[];
+    
+    //find the shape node[s] of $ctrl
+    $shapes = `listRelatives -shapes $ctrl`;
+    
+    for ($shape in $shapes)
+    {
+        //check for nurbsCurve
+        if (`nodeType $shape` == "nurbsCurve")
+        {
+            //enable override on $shape
+            setAttr ($shape + ".overrideEnabled") 1;
+            
+            //set $shape color to $color
+            setAttr ($shape + ".overrideColor") $color;
+        } 
+        else 
+        {
+            warning("Selected object is not a curve.");
+        }
+    }
+}
+
+CreateCtrl(1);
+
+/*
+//if $sels has someting in it, do the sweet code we just made
+if (size($sels) != 0)
+
+//if $sels has nothing in it, make a control and group it without mathing transformations or all that jazz
+else
+*/
