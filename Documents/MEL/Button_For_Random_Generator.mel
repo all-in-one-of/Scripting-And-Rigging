@@ -49,13 +49,14 @@ global proc float GetFloatFieldValue (string $control)
     return $value;
 }
 
+
+global proc string GetUIData()
+//Query field data
+//Call Function
+
 GeneratorUI();
 
 //Still need to source
-
-
-
-
 
 
 
