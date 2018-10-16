@@ -1,0 +1,30 @@
+global proc ControlCreator () 
+
+{
+    
+    string $mainWindow = "Creating Controls";
+    
+    if (`window -exists $mainWindow`)
+    {
+        deleteUI $mainWindow;
+    }
+ 
+ //Title of the Window
+    $mainWindow = `window -title "Creating Controls" $mainWindow`;
+    string $mainCol = `columnLayout -parent $mainWindow -adjustableColumn 1`;
+ 
+//Ctrl shapes
+    string $button = `button -parent $mainCol -label "Circle"`; //finish me)
+    string $button = `button -parent $mainCol -label "Square"`;//finish me)
+    string $button = `button -parent $mainCol -label "Flower"`; //finish me)
+ 
+ 
+//Ctrl Colors: Do a Slider
+//https://help.autodesk.com/cloudhelp/2017/ENU/Maya-Tech-Docs/Commands/colorSliderGrp.html
+ 
+ 
+ 
+    showWindow $mainWindow;
+}
+
+ControlCreator();

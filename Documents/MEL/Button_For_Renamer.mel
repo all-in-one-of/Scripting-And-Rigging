@@ -1,0 +1,35 @@
+global proc JointRenamer ()
+ 
+{
+    
+    string $mainWindow = "Random Placement Window";
+    
+    if (`window -exists $mainWindow`)
+    {
+        deleteUI $mainWindow;
+       
+    }
+    
+//Title of the Window
+    $mainWindow = `window -title "Renaming the Joints" $mainWindow`;
+    string $mainCol = `columnLayout -parent $mainWindow -adjustableColumn 1`;
+
+//Select the joints
+    string $sels[] = `ls -selection`;
+    
+//New name for the joints
+    string $dupRowLayout = `rowLayout -parent $mainCol -numberOfColumns 2 -adjustableColumn 2`;
+    text -parent $dupRowLayout -label "New Prefix";
+    string $dupIntField = `intField -parent $dupRowLayout -minValue 001 -value 100`; //change from values to...
+       
+    
+    string $dupRowLayout = `rowLayout -parent $mainCol -numberOfColumns 2 -adjustableColumn 2`;
+    text -parent $dupRowLayout -label "New Suffix";
+    string $dupIntField = `intField -parent $dupRowLayout -minValue 001 -value 100`;
+ 
+ 
+ 
+    showWindow $mainWindow;
+}
+
+JointRenamer();
