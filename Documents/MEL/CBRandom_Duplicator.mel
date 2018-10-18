@@ -1,0 +1,93 @@
+//So close, it just needs to know the correct scourcing procedure
+
+global proc Duplicate(int $dupNumber, float $xmin, float $xmax, float $ymin, float $ymax, float $zmin, float $zmax){
+    
+    string $objs[] = `ls -selection`;
+    
+    for($i=0 ; $i < $dupNumber; $i++)
+    {
+        duplicate -rr $objs;
+        $objs = `ls -selection`;
+        string $obj = $objs[0];
+        
+        float $tempX = rand($xmin, $xmax);
+        float $tempY = rand($ymin, $ymax);
+        float $tempZ = rand($zmin, $zmax);
+        
+        setAttr ($obj + ".translateX") $tempX;
+        setAttr ($obj + ".translateY") $tempY;
+        setAttr ($obj + ".translateZ") $tempZ;
+    }
+
+   // print ("He loves me... " + $obj + "" + $numPetals + "He loves me not...");
+}
+
+//Duplicate(5, -1, 1, -1, 1, -1, 1);
+
+
+global proc GeneratorUI () 
+{
+    
+    string $mainWindow = "Random Placement Window";
+    
+    if (`window -exists $mainWindow`)
+    {
+        deleteUI $mainWindow;
+    }
+    
+    
+    $mainWindow = `window -title "Random Placement Generator" $mainWindow`;
+    string $mainCol = `columnLayout -parent $mainWindow -adjustableColumn 1`;
+    
+    string $dupRowLayout = `rowLayout -parent $mainCol -numberOfColumns 2 -adjustableColumn 2`;
+    text -parent $dupRowLayout -label "Duplicate";
+    string $dupIntField = `intField -parent $dupRowLayout -minValue 1 -value 7`;
+    
+    
+    string $rangeRowLayout = `rowLayout -parent $mainCol -numberOfColumns 4`;
+    text -parent $rangeRowLayout -label "Range";
+    string $xRange = `floatField -parent $rangeRowLayout -value 0`;
+    string $yRange = `floatField -parent $rangeRowLayout -value 0`;
+    string $zRange = `floatField -parent $rangeRowLayout -value 0`;
+    
+    string $button = `button -parent $mainCol -label "Initiate" -command ("Moveobj (\""+ $xRange + "\", \"" + $yRange + "\", \"" + $zRange + "\")")`;
+    
+    showWindow $mainWindow;
+    
+}
+
+
+
+
+/*global proc moveObject (string $xName, string $yName, string $zName)
+
+{
+    string $sels[] = `ls -selection`;
+    
+    float $xVal = `GetFloatFieldValue ($xName)`;
+    float $yVal = `GetFloatFieldValue ($yName)`;
+    float $zVal = `GetFloatFieldValue ($zName)`;
+    
+    move $xVal $yVal $zVal $sels;
+    
+    
+}
+
+global proc float GetFloatFieldValue (string $control)
+{
+    float $value = `floatField -q -value $control`;
+    return $value;
+}
+
+
+global proc string GetUIData()
+*/
+//Query field data
+//Call Function
+
+GeneratorUI();
+
+//Still need to source
+
+
+

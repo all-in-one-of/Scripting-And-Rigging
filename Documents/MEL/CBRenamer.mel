@@ -1,0 +1,86 @@
+//Same errors as before
+global proc Renamer(string $Prefix, string $name, int $number, string $numberPadding, string $Suffix)
+{
+    
+    string $selected[] = `ls - selection`;
+    
+    
+    for($item in $selected){
+        
+        int $poundNum = size ($numberPadding) - size (string($number));
+    
+        string $padding;
+        int $numDigits = 0;
+    
+    
+        for($i = 1; $i <= $poundNum; $i ++)
+        {
+            
+            $padding += "0";
+                     
+        }
+            
+        $padding += $number;
+        $number++;
+        
+        string $rearrange = ($Prefix + "_" + $name + "_" + $padding + "_" + $Suffix);
+        rename $item $rearrange; 
+        
+    }
+}
+
+
+
+
+global proc int QueryIntValue(string $objName)
+{
+    int $intValue = `intField -q -v $objName`;
+    return $intValue;
+}
+
+global proc string QueryText(string $objName){
+    string $text = `textField -q -tx $objName`;
+    return $text;
+}
+
+
+
+global proc JointRenamerUI ()
+ 
+{
+    
+    string $mainWindow = "Random Placement Window";
+    
+    
+        if (`window -exists $mainWindow`)
+        {
+            deleteUI $mainWindow;
+       
+        }
+    
+    string $mainWindow = `window -title "Renaming the Joints" $mainWindow`;
+
+    
+    $gridCol = `gridLayout -parent $mainWindow -numberOfColumns 2`;
+    
+
+
+    //string $dupRowLayout = `rowLayout -parent $mainCol -numberOfColumns 2 -adjustableColumn 2`;
+    text -parent $gridCol -label "Prefix";
+    string $prefix = `textField -parent $gridCol`;
+    text -parent $gridCol -label "Name";
+    string $name = `textField -parent $gridCol`;
+    text -parent $gridCol -label "Number";
+    string $number = `intField -parent $gridCol`;
+    text -parent $gridCol -label "Padding";
+    string $numPadding = `textField -parent $gridCol`;
+    text -parent $gridCol -label "Suffix";
+    string $suffix = `textField -parent $gridCol`;
+
+
+     $button = `button -label "Rename and Number" -command "Renamer(`QueryText($prefix)`, `QueryText($name)`, `QueryIntValue($number)`, `QueryText($numPadding)`, `QueryText($suffix)`);"`;
+ 
+    showWindow $mainWindow;
+}
+
+JointRenamerUI ();

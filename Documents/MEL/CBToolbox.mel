@@ -1,0 +1,21 @@
+global proc ToolBox ()
+{
+        string $mainWindow = "Tool Box Window";
+    
+    if (`window -exists $mainWindow`)
+        deleteUI $mainWindow;
+    
+    $mainWindow = `window -title "Tool Box" $mainWindow`;
+    string $mainCol = `columnLayout -adjustableColumn 1`;
+    
+    string $button = `button -parent $mainCol -label "Control Creator" -c "ControlCreatorUI();"`;
+    string $button = `button -parent $mainCol -label "Random Generator" -c "GeneratorUI();"`;
+    string $button = `button -parent $mainCol -label "Renamer" -c "JointRenamerUI();"`;
+    
+    showWindow $mainWindow;
+    
+}
+
+
+ToolBox(); 
+

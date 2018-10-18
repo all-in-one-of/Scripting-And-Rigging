@@ -1,0 +1,26 @@
+global proc Duplicate(int $dupNumber, float $xmin, float $xmax, float $ymin, float $ymax, float $zmin, float $zmax){
+    
+    string $objs[] = `ls -selection`;
+    
+    for($i=0 ; $i < $dupNumber; $i++)
+    {
+        duplicate -rr $objs;
+        $objs = `ls -selection`;
+        string $obj = $objs[0];
+        
+        float $tempX = rand($xmin, $xmax);
+        float $tempY = rand($ymin, $ymax);
+        float $tempZ = rand($zmin, $zmax);
+        
+        setAttr ($obj + ".translateX") $tempX;
+        setAttr ($obj + ".translateY") $tempY;
+        setAttr ($obj + ".translateZ") $tempZ;
+    }
+
+   // print ("He loves me... " + $obj + "" + $numPetals + "He loves me not...");
+}
+
+Duplicate(5, -1, 1, -1, 1, -1, 1);
+
+
+
