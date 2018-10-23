@@ -1,13 +1,20 @@
-//Same errors as before
-global proc Renamer(string $Prefix, string $name, int $number, string $numberPadding, string $Suffix)
+
+global proc Renamer(string $Prefix, string $Name, string $number, string $numberPadding, string $Suffix)
 {
+    
+    string $truePrefix = QueryText($Prefix);
+    string $trueName = QueryText($Name);
+    int $trueNumber = QueryIntValue($number);
+    string $trueNumberPadding = QueryText($numberPadding);
+    string $trueSuffix = QueryText($Suffix);
+    
     
     string $selected[] = `ls - selection`;
     
     
     for($item in $selected){
         
-        int $poundNum = size ($numberPadding) - size (string($number));
+        int $poundNum = size ($trueNumberPadding) - size (string($trueNumber));
     
         string $padding;
         int $numDigits = 0;
@@ -20,15 +27,14 @@ global proc Renamer(string $Prefix, string $name, int $number, string $numberPad
                      
         }
             
-        $padding += $number;
-        $number++;
+        $padding += $trueNumber;
+        $trueNumber++;
         
-        string $rearrange = ($Prefix + "_" + $name + "_" + $padding + "_" + $Suffix);
+        string $rearrange = ($truePrefix + "_" + $trueName + "_"+ $trueNumber + "_" + $padding + "_" + $trueSuffix);
         rename $item $rearrange; 
         
     }
 }
-
 
 
 
@@ -58,7 +64,7 @@ global proc JointRenamerUI ()
        
         }
     
-    string $mainWindow = `window -title "Renaming the Joints" $mainWindow`;
+    $mainWindow = `window -title "Renaming the Joints" $mainWindow`;
 
     
     $gridCol = `gridLayout -parent $mainWindow -numberOfColumns 2`;
@@ -69,7 +75,7 @@ global proc JointRenamerUI ()
     text -parent $gridCol -label "Prefix";
     string $prefix = `textField -parent $gridCol`;
     text -parent $gridCol -label "Name";
-    string $name = `textField -parent $gridCol`;
+    string $Name = `textField -parent $gridCol`;
     text -parent $gridCol -label "Number";
     string $number = `intField -parent $gridCol`;
     text -parent $gridCol -label "Padding";
@@ -78,8 +84,10 @@ global proc JointRenamerUI ()
     string $suffix = `textField -parent $gridCol`;
 
 
-     $button = `button -label "Rename and Number" -command "Renamer(`QueryText($prefix)`, `QueryText($name)`, `QueryIntValue($number)`, `QueryText($numPadding)`, `QueryText($suffix)`);"`;
+//     $button = `button -label "Rename and Number" -command "Renamer(`QueryText($prefix)`, `QueryText($Name)`, `QueryIntValue($number)`, `QueryText($numPadding)`, `QueryText($suffix)`);"`;
  
+    $button = `button -label "Rename and Number" -command ("Renamer(\"" + $prefix + "\", \"" + $Name + "\", \"" + $number + "\", \"" + $numPadding + "\", \"" + $suffix + "\")")`;
+    
     showWindow $mainWindow;
 }
 
