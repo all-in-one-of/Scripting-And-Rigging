@@ -84,32 +84,6 @@ global proc GeneratorUI ()
 
 
 
-
-/*global proc moveObject (string $xName, string $yName, string $zName)
-
-{
-    string $sels[] = `ls -selection`;
-    
-    float $xVal = `GetFloatFieldValue ($xName)`;
-    float $yVal = `GetFloatFieldValue ($yName)`;
-    float $zVal = `GetFloatFieldValue ($zName)`;
-    
-    move $xVal $yVal $zVal $sels;
-    
-    
-}
-
-global proc float GetFloatFieldValue (string $control)
-{
-    float $value = `floatField -q -value $control`;
-    return $value;
-}
-
-
-global proc string GetUIData()
-*/
-
-
 GeneratorUI();
 
 
