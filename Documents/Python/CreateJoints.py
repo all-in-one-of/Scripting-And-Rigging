@@ -8,4 +8,5 @@ def createJnts():
     for sel in sels:
         cmds.matchTransform(cmds.joint(), sel)
 
+
 createJnts()
