@@ -1,0 +1,185 @@
+global proc RenameUI()
+{
+    string $mainWind = "Renaming";
+    
+    if (`window -exists $mainWind`)
+        deleteUI $mainWind;
+    
+    $mainWind = `window -title "Renamer" $mainWind`;
+    
+    string $mainCol = `columnLayout -parent $mainWind`;
+    string $newName =  "mer";
+    $newName = `textFieldButtonGrp -parent $mainCol -buttonLabel "NewName" -buttonCommand ("Rename(\"" + $newName + "\")") $newName`;
+    //creates an editable field with a button
+    
+    showWindow $mainWind;
+}
+RenameUI();
+
+
+
+
+global proc RandPlaceUI()
+{
+    string $mainWindow = "RandPlaceGenerator";
+    
+    if (`window -exists $mainWindow`)
+        deleteUI $mainWindow;
+    
+    $mainWindow = `window -title "Random Placement" $mainWindow`;
+    //creates Window
+    
+    string $mainCol = `columnLayout -parent $mainWindow -adjustableColumn 1`;
+    //initial Column Layout
+    
+    string $dupNum = `intFieldGrp -parent $mainCol -value1 1 -label "Number of Duplicates"`;
+    //First field for duplicate number
+    
+    string $rangeRowFirst = `rowLayout -parent $mainCol -numberOfColumns 7`;
+    //Row Layout for 7 different fields in the row
+    
+    text -parent $rangeRowFirst -label "Range Min";
+    string $xMinRange = `floatField -parent $rangeRowFirst -precision 2 -value 0`;
+    text -parent $rangeRowFirst -label "X";
+    string $yMinRange = `floatField -parent $rangeRowFirst -precision 2 -value 0`;
+    text -parent $rangeRowFirst -label "Y";
+    string $zMinRange = `floatField -parent $rangeRowFirst -precision 2 -value 0`;
+    text -parent $rangeRowFirst -label "Z";
+    
+    string $rangeRowSecond = `rowLayout -parent $mainCol -numberOfColumns 7`;
+    //Row Layout for 7 different fields in the row
+    
+    text -parent $rangeRowSecond -label "Range Max";
+    string $xMaxRange = `floatField -parent $rangeRowSecond -precision 2 -value 0`;
+    text -parent $rangeRowSecond -label "X";
+    string $yMaxRange = `floatField -parent $rangeRowSecond -precision 2 -value 0`;
+    text -parent $rangeRowSecond -label "Y";
+    string $zMaxRange = `floatField -parent $rangeRowSecond -precision 2 -value 0`;
+    text -parent $rangeRowSecond -label "Z";
+    
+    string $button = `button -parent $mainCol -label "Generate" -command ("RandMove(\"" + $dupNum + "\", \"" + $xMinRange + "\", \"" + $yMinRange + "\", \"" + $zMinRange + "\", \"" + $xMaxRange + "\", \"" + $yMaxRange + "\", \"" + $zMaxRange + "\")") `;
+    //creates button
+    
+    
+    showWindow $mainWindow;
+    //actually creates the window to use
+}
+RandPlaceUI();
+
+
+
+global proc CtrlsUI()
+{
+    string $mainWindow = "ControlCreator";
+    
+    if (`window -exists $mainWindow`)
+        deleteUI $mainWindow;
+    
+    $mainWindow = `window -title "Controls" $mainWindow`;
+    
+    string $mainCol = `columnLayout -parent $mainWindow -adjustableColumn 1`;
+    
+    string $color = `colorIndexSliderGrp -parent $mainCol -label "Ctrl Color" -maxValue 32 -minValue 0 -value 20 `;
+    //A color slider to choose color
+    
+    string $shapeOptions = `optionMenu -parent $mainCol -label "Shape"`;
+    string $optionCircle = `menuItem -parent $shapeOptions -label "Circle"`;
+    string $optionDiamond = `menuItem -parent $shapeOptions -label "Diamond"`;
+    string $optionFlower = `menuItem -parent $shapeOptions -label "Flower"`;
+    string $optionSquare = `menuItem -parent $shapeOptions -label "Square"`;
+    string $optionStar = `menuItem -parent $shapeOptions -label "Star"`;
+    //dropdown Menu for the different shape options
+    
+    string $constrainOptions = `checkBoxGrp -parent $mainCol -numberOfCheckBoxes 4 -label "Constrain" -label1 "Parent" -label2 "Rotate Only" -label3 "Translate Only" -label4 "None" -value1 1`;
+    
+    string $button = `button -parent $mainCol -label "Create Ctrls" -command ("RunCreateCtrls(\"" + $color + "\", \"" + $shapeOptions + "\", \"" + $constrainOptions + "\")") `;
+    
+    
+    showWindow $mainWindow;
+}
+CtrlsUI();
+
+
+
+global proc ToolboxUI()
+{
+    string $mainWindow = "Toolbox";
+    
+    if (`window -exists $mainWindow`)
+        deleteUI $mainWindow;
+    
+    $mainWindow = `window -title "My Toolbox" $mainWindow`;
+    
+    string $mainCol = `columnLayout -parent $mainWindow -adjustableColumn 1`;
+    string $ctrlsButton = `button -label "CreateCtrls" -parent $mainCol -command ("CtrlsUI()")`;
+    string $randomButton = `button -label "RandomPlacement" -parent $mainCol -command("RandPlaceUI()")`;
+    string $renameButton = `button -label "Rename" -parent $mainCol  -command("RenameUI()")`;
+    
+    
+    showWindow $mainWindow;
+}
+ToolboxUI();
+
+
+
+
+
+global proc float GetFloatFieldValue (string $control)
+{
+    float $value = `floatField -q -value $control`;
+    //getting the actual value of the floatField
+    
+    return $value;
+}
+
+
+global proc int GetIntFieldGrpValue (string $control)
+{
+    int $value = `intFieldGrp -q -value1 $control`;
+    //getting the actual value of what intFieldGrp is
+    
+    return $value;
+}
+
+global proc string GetTextFieldButtonGrpString (string $control)
+{   
+    string $string = `textFieldButtonGrp -q -text $control`;
+    
+    return $string;
+}
+
+global proc int GetColorIndexSlider (string $control)
+{
+    int $value = `colorIndexSliderGrp -q -value $control`;
+    
+    return $value;
+}
+
+global proc int[] GetCheckboxGrpValue (string $control)
+{
+    int $value[];
+    $value[0] = `checkBoxGrp -q -value1 $control`;
+    $value[1] = `checkBoxGrp -q -value2 $control`;
+    $value[2] = `checkBoxGrp -q -value3 $control`;
+    $value[3] = `checkBoxGrp -q -value4 $control`;
+
+    return $value;
+}
+
+global proc string GetOptionMenuValue (string $control)
+{
+    string $menuValue = `optionMenu -q -value $control`;
+    return $menuValue;
+}
+
+
+
+global proc RunCreateCtrls (string $color, string $shape, string $parent)
+{
+    int $newColor = `GetColorIndexSlider ($color)`;
+    string $newShape = `GetOptionMenuValue ($shape)`;
+    int $newParent[];
+    $newParent = `GetCheckboxGrpValue ($parent)`;
+    
+    CreateCtrls($newColor, $newShape, $newParent);
+}
