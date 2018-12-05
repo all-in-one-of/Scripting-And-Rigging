@@ -1,4 +1,6 @@
 import maya.cmds as cmds
+
+
 def prefixation(prefix = "prefix"):
     
     # Rename selected objects using a prefix.
@@ -10,10 +12,10 @@ def prefixation(prefix = "prefix"):
 
     for number, object in enumerate(sels):
     # Adds number padding for rename with 3 digits.
-        cmds.rename(object, ('%s%03d' % (prefix, numofsel-number)))
+        cmds.rename(object, ('%s%02d' % (prefix, numofsel-number)))
 
 #To name the Prefix
-prefixation('prefix_')
+prefixation('Snake_')
 
 
 def suffixation(suffix = "suffix"):
@@ -26,4 +28,4 @@ def suffixation(suffix = "suffix"):
     for number, object in enumerate(sels):
         cmds.rename(object, sels_short[number]+suffix)
 #To name the Suffix
-suffixation('_suffix') 
+suffixation('_Jnt') 
