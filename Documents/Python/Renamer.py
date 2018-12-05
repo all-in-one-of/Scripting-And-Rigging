@@ -1,31 +1,77 @@
+
 import maya.cmds as cmds
 
 
-def prefixation(prefix = "prefix"):
-    
-    # Rename selected objects using a prefix.
-    sels =cmds.ls(sl=True, long=True)
-    
-    # reverse allows you to rename with a selected heirarchy.
-    sels.reverse()
-    numofsel = len(sels)
+class RenamerWindow():
 
-    for number, object in enumerate(sels):
-    # Adds number padding for rename with 3 digits.
-        cmds.rename(object, ('%s%02d' % (prefix, numofsel-number)))
+	def Renamer(self, Prefix,  Name,  number,  numberPadding,  Suffix):
 
-#To name the Prefix
-prefixation('Snake_')
+		
+
+		selected = cmds.ls (selection = True)
+		
+		
+		for item in selected:
+			
+			poundNum = len (numberPadding) - len (str(number))
+			padding = ""
+			numDigits = 0
+
+		
+			for var in range (0,poundNum):
+			
+				
+				padding += "0"
+						 
+			
+				
+			padding += str(number)
+			number += 1
+			
+			rearrange = (Prefix + "_" + Name + "_" + padding + "_" + Suffix)
+			cmds.rename (item, rearrange) 
+			
 
 
-def suffixation(suffix = "suffix"):
-    sels = cmds.ls(sl=True, long=True)
-    sels_short = cmds.ls(selection=True, long=False)
-    sels.reverse()
-    sels_short.reverse()
-    numofsel = len(sels)
 
-    for number, object in enumerate(sels):
-        cmds.rename(object, sels_short[number]+suffix)
-#To name the Suffix
-suffixation('_Jnt') 
+
+
+	def JointRenamerUI (self):
+	 
+
+		
+		self.mainWindow = "Renamer Window"
+		
+		
+		if (cmds.window (self.mainWindow, exists = True)):
+			
+			cmds.deleteUI (self.mainWindow)
+		   
+			
+		
+		self.mainWindow = cmds.window (self.mainWindow, title = "Renaming the Joints")
+
+		
+		self.gridCol = cmds.rowColumnLayout (parent = self.mainWindow, numberOfColumns = 2)
+		
+
+		
+		cmds.text (parent = self.gridCol, label = "Prefix")
+		self.prefix = cmds.textField (parent = self.gridCol)
+		cmds.text (parent = self.gridCol, label = "Name")
+		self.Name = cmds.textField (parent = self.gridCol)
+		cmds.text (parent = self.gridCol, label = "Number")
+		self.number = cmds.intField (parent = self.gridCol)
+		cmds.text (parent = self.gridCol, label = "Padding")
+		self.numPadding = cmds.textField (parent = self.gridCol)
+		cmds.text (parent = self.gridCol, label = "Suffix")
+		self.suffix = cmds.textField (parent = self.gridCol)
+
+	 
+		cmds.button (label = "Rename and Number", command = lambda x: self.Renamer(cmds.textField(self.prefix, query = True, text = True), cmds.textField(self.Name, query = True, text = True), cmds.intField(self.number, query = True, value = True),cmds.textField(self.numPadding, query = True, text = True), cmds.textField(self.suffix, query = True, text = True)))
+		
+		cmds.showWindow (self.mainWindow)
+
+RenamerWindow = RenamerWindow()
+
+RenamerWindow.JointRenamerUI()

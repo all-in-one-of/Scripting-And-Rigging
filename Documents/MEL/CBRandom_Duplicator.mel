@@ -1,5 +1,6 @@
 
-global proc Duplicate(string $dupNumber, string $xmin, string $xmax, string $ymin, string $ymax, string $zmin, string $zmax){
+global proc Duplicate(string $dupNumber, string $xmin, string $xmax, string $ymin, string $ymax, string $zmin, string $zmax)
+{
     
     
     int $trueDupNumber = QueryIntValue($dupNumber);
@@ -83,11 +84,4 @@ global proc GeneratorUI ()
 }
 
 
-3571
-
 GeneratorUI();
-
-
-
-
-
